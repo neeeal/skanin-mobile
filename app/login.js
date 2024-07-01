@@ -10,10 +10,12 @@ import {
     Platform,
     Image
 } from 'react-native';
+import { Iconify } from 'react-native-iconify';
 import { useSession } from '../ctx';
 import { useFontContext } from '../ftx';
 import AppLoading from 'expo-app-loading';
 import { router } from 'expo-router';
+import Lock from '../assets/svg/Lock.svg';
 
 export default function Login() {
   const { fontsLoaded } = useFontContext();
@@ -35,7 +37,7 @@ export default function Login() {
       className="flex items-center"
     >
         <TouchableOpacity onPress={() => router.replace("/option")} className="flex mx-2 mt-[13%] mb-[8%] p-2 self-start ">
-          <Image source={require('../assets/images/Back To.png')}/>
+          <Iconify icon="ion:chevron-back-circle-sharp" size={54} color={"#FFFFFF"} />
         </TouchableOpacity>
         <View className="mb-16 pt-16 ">
           <Text style={{fontFamily: 'Montserrat_400Regular'}} className="text-center text-[#049B04] text-4xl font-bold">Welcome back!</Text>
@@ -43,11 +45,13 @@ export default function Login() {
         </View>
         <View className="mb-8 w-full items-center">
           <View className="w-[80%] py-2 flex-row mb-4 pl-3 bg-white rounded-md ">
-            <Image source={require('../assets/images/User.png')}/>
-            <TextInput className="pl-2 flex flex-1 mr-2 ml-2" placeholder='Email Address' placeholderTextColor={"#049B04"}/>
+            {/* <Image source={require('../assets/images/User.png')}/> */}
+            <Iconify icon="material-symbols:person" size={32} color={"#086608"} />
+            <TextInput className="flex flex-1 mr-2 ml-2" placeholder='Email Address' placeholderTextColor={"#049B04"}/>
           </View>
-          <View className="w-[80%] py-2 flex-row bg-white rounded-md">
-            <Image source={require('../assets/images/Lock.png')}/>
+          <View className="w-[80%] py-2 pl-3 flex-row bg-white rounded-md">
+            {/* <Image source={require('../assets/images/Lock.png')}/> */}
+            <Lock width="32" height="32"/>
             <TextInput  className="pl-2 flex flex-1 mr-2" placeholder='Password' placeholderTextColor={"#049B04"} secureTextEntry />
           </View>
           <View className="mt-2">

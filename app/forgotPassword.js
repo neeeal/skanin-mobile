@@ -11,6 +11,7 @@ import {
     Image
 } from 'react-native';
 import { useFontContext } from '../ftx';
+import { Iconify } from 'react-native-iconify';
 import AppLoading from 'expo-app-loading';
 import { router } from 'expo-router';
 
@@ -33,7 +34,8 @@ export default function ForgotPassword() {
       className="flex items-center"
     >
         <TouchableOpacity onPress={() => router.replace("/login")} className="flex mx-2 mt-[13%] mb-[8%] p-2 self-start ">
-          <Image source={require('../assets/images/Back To.png')}/>
+          
+          <Iconify icon="ion:chevron-back-circle-sharp" size={54} color={"#FFFFFF"} />
         </TouchableOpacity>
         <View className="mb-6 px-7">
           <Text style={{fontFamily: 'Montserrat_400Regular'}} className="text-left text-[#049B04] text-4xl font-bold">Reset Password</Text>
@@ -44,7 +46,8 @@ export default function ForgotPassword() {
         </View>
         <View className="mb-3 w-full items-center">
           <View className="w-[80%] py-2 pl-3 flex-row bg-white rounded-md ">
-            <Image source={require('../assets/images/User.png')}/>
+            {/* <Image source={require('../assets/images/User.png')}/> */}
+            <Iconify icon="material-symbols:person" size={32} color={"#086608"} />
             <TextInput className="pl-2 flex flex-1 mr-2 " placeholder='Email Address' placeholderTextColor={"#049B04"}/>
           </View>
         </View>

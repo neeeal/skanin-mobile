@@ -1,9 +1,9 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs } from 'expo-router';
 import { Redirect, Stack } from 'expo-router';
-import { Text, View } from "react-native";
+import { Text, Image } from "react-native";
 import { useSession } from '../../ctx';
-
+import { Iconify } from 'react-native-iconify';
 export default function AppLayout() {
   const { session, isLoading } = useSession();
 
@@ -26,29 +26,33 @@ export default function AppLayout() {
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <FontAwesome size={28} name="home" color={color} />,
+          headerShown: false,
+          tabBarIcon: ({ color }) => <Iconify icon="ic:baseline-home" size={24} color={color} />,
         }}
       />
       <Tabs.Screen
         name="scan"
         options={{
           title: 'Scan',
-          tabBarIcon: ({ color }) => <FontAwesome size={28} name="cog" color={color} />,
+          headerShown: false,
+          tabBarIcon: ({ color }) => <Iconify icon="mingcute:scan-fill" size={24} color={color} />,
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
           title: 'Profile',
-          tabBarIcon: ({ color }) => <FontAwesome size={28} name="cog" color={color} />,
+          headerShown: false,
+          tabBarIcon: ({ color }) => <Iconify icon="material-symbols:person" size={24} color={color} />,
         }}
       />
       <Tabs.Screen
         name="history"
         options={{
           title: 'History',
+          headerShown: false,
           href: null,
-          tabBarIcon: ({ color }) => <FontAwesome size={28} name="cog" color={color} />,
+          tabBarIcon: ({ color }) => <Iconify icon="mdi:heart" size={24} color={color} />,
         }}
       />
     </Tabs>
