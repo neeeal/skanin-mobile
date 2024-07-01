@@ -34,7 +34,7 @@ export default function Login() {
       style={{ flex: 1 }}
       className="flex items-center"
     >
-        <TouchableOpacity onPress={() => router.replace("/")} className="flex mx-2 mt-[13%] mb-[8%] p-2 self-start ">
+        <TouchableOpacity onPress={() => router.replace("/option")} className="flex mx-2 mt-[13%] mb-[8%] p-2 self-start ">
           <Image source={require('../assets/images/Back To.png')}/>
         </TouchableOpacity>
         <View className="mb-16 pt-16 ">
@@ -51,12 +51,25 @@ export default function Login() {
             <TextInput  className="pl-2 flex flex-1 mr-2" placeholder='Password' placeholderTextColor={"#049B04"} secureTextEntry />
           </View>
           <View className="mt-2">
-            <TouchableOpacity className=" p-1"><Text className="text-center underline text-white text-xs">Forgot Password?</Text></TouchableOpacity>
-            <TouchableOpacity className="mb-1 p-1"><Text className="text-center underline text-white text-xs">Don't have an account?</Text></TouchableOpacity>
+            <TouchableOpacity 
+            onPress={
+              () => {
+                router.push("/forgotPassword")
+              }
+            }
+            className=" p-1"><Text className="text-center underline text-white text-xs">Forgot Password?</Text></TouchableOpacity>
+            <TouchableOpacity 
+            onPress={
+              () => {
+                router.push("/signup")
+              }
+            }
+            className="mb-1 p-1"><Text className="text-center underline text-white text-xs">Don't have an account?</Text></TouchableOpacity>
           </View>
         </View>
         <TouchableOpacity 
           onPress={() => {
+            // TODO: Do the actual login logic
             signIn();
             router.replace("/");
           }} 
