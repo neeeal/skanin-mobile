@@ -21,7 +21,20 @@ export default function AppLayout() {
   }
 
 
-    return <Tabs screenOptions={{ tabBarActiveTintColor: 'blue' }}>
+    return <Tabs 
+      screenOptions={{ 
+      tabBarActiveTintColor: 'green',
+      tabBarItemStyle: {
+        // padding:10,
+      },
+      tabBarInactiveTintColor: "#086608",
+      tabBarActiveBackgroundColor: 'white',
+      tabBarStyle:{
+        backgroundColor: '#049B04',
+        borderRadius:16
+      }, 
+      tabBarShowLabel: false,
+    }}>
       <Tabs.Screen
         name="index"
         options={{
