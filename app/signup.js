@@ -35,7 +35,7 @@ export default function Signup() {
       style={{ flex: 1 }}
       className="flex items-center"
     >
-        <TouchableOpacity onPress={() => router.replace("/option")} className="flex mx-2 mt-[13%] mb-[8%] p-2 self-start ">
+        <TouchableOpacity onPress={() => router.back()} className="flex mx-2 mt-[13%] mb-[8%] p-2 self-start ">
           <Iconify icon="ion:chevron-back-circle-sharp" size={54} color={"#FFFFFF"} />
         </TouchableOpacity>
         <View className="mb-16 pt-16 ">
