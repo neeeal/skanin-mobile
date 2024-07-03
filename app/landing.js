@@ -4,10 +4,10 @@ import { useSession } from '../ctx';
 import { useFontContext } from '../ftx';
 import AppLoading from 'expo-app-loading';
 import { router } from 'expo-router';
+import LongButton from '../components/button/long';
 
 export default function Landing() {
   const { fontsLoaded } = useFontContext();
-  const { signIn } = useSession();
 
   if (!fontsLoaded) {
     return <AppLoading />;
