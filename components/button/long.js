@@ -1,7 +1,7 @@
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
 
-export default LongButton = ({route, color, text}) =>{
+const LongButton = ({route, color, text}) =>{
     return(
         <TouchableOpacity 
         onPress={() => router.push(route)} 
@@ -21,3 +21,5 @@ const styles = StyleSheet.create({
       elevation: 5
     }
   })
+
+export default LongButton;

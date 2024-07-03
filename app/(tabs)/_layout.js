@@ -48,6 +48,7 @@ export default function AppLayout() {
         options={{
           title: 'Scan',
           headerShown: false,
+          tabBarStyle: {display:"none"},
           tabBarIcon: ({ color }) => <Iconify icon="mingcute:scan-fill" size={24} color={color} />,
         }}
       />
