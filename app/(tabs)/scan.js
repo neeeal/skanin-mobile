@@ -1,30 +1,15 @@
-// import { StatusBar } from "expo-status-bar";
-// // import { StyleSheet, Text, View } from "react-native";
-// import { Text, View, TouchableOpacity } from "react-native";
-// import { router } from 'expo-router';
-// import { Iconify } from 'react-native-iconify';
-
-// export default function Scan() {
-//   return (
-//     <View>
-//         <TouchableOpacity onPress={() => router.back()} className="flex mx-2 mt-[13%] mb-[8%] p-2 self-start absolute">
-//           <Iconify icon="ion:chevron-back-circle-sharp" size={54} color={"#FFFFFF"} />
-//         </TouchableOpacity>
-//     </View>
-//     // <View className="border border-black">
-//     //   <Text className="font-bold">Scan page!</Text>
-//     //   <StatusBar style='auto' />
-//     // </View>
-//   );
-// }
-
+import React, { useState, useRef } from 'react';
+import { Button, StyleSheet, Text, TouchableOpacity, View, ImageBackground } from 'react-native';
+import { router } from 'expo-router';
+import { Iconify } from 'react-native-iconify';
 import { CameraView, useCameraPermissions } from 'expo-camera';
-import { useState } from 'react';
-import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 
 export default function App() {
   const [facing, setFacing] = useState('back');
   const [permission, requestPermission] = useCameraPermissions();
+  const cameraRef = useRef(null);
+  const [image, setImage] = useState(null);
 
   if (!permission) {
     // Camera permissions are still loading.
@@ -41,19 +26,64 @@ export default function App() {
     );
   }
 
-  function toggleCameraFacing() {
+  const toggleCameraFacing = () => {
     setFacing(current => (current === 'back' ? 'front' : 'back'));
+  }
+
+  const captureImage = async () => { 
+    console.log("CAPTURED") 
+    let photo = await cameraRef.current.takePictureAsync();
+    setImage(photo.uri);
+    console.log(photo.uri);
+  }
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+
+  const goBack = () => {
+    router.back();
+    setImage(null);
   }
 
   return (
     <View style={styles.container}>
-      <CameraView style={styles.camera} facing={facing}>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-            <Text style={styles.text}>Flip Camera</Text>
+      {image ? (
+        <ImageBackground source={{ uri: image }} style={styles.camera} >
+                    <TouchableOpacity  className="flex mx-2 mt-[13%] mb-[8%] p-2 self-start absolute" onPress={goBack}>
+            <Iconify icon="ion:chevron-back-circle-sharp" size={54} color={"#FFFFFF"} />
           </TouchableOpacity>
-        </View>
-      </CameraView>
+          </ImageBackground>
+      ) : (
+        <CameraView style={styles.camera} facing={facing} ref={cameraRef} mute={true}>
+          <TouchableOpacity onPress={() => router.back()} className="flex mx-2 mt-[13%] mb-[8%] p-2 self-start absolute">
+            <Iconify icon="ion:chevron-back-circle-sharp" size={54} color={"#FFFFFF"} />
+          </TouchableOpacity>
+          <View className="absolute w-[100%] h-[10%] flex-row p-1 bottom-0 rounded-3xl justify-evenly items-center bg-white">
+            <TouchableOpacity className="rounded-full p-1" onPress={pickImage}>
+              <Iconify icon="iconoir:media-image-plus" size={34} color={"#049B04"} />
+            </TouchableOpacity>
+            <TouchableOpacity className="rounded-full bg-[#049B04] p-3" onPress={captureImage}>
+              <Iconify icon="ion:camera-sharp" size={44} w color={"#ffffff"} />
+            </TouchableOpacity>
+            <TouchableOpacity className="rounded-full p-1" onPress={toggleCameraFacing}>
+              <Iconify icon="eva:flip-fill" size={30} color={"#049B04"} />
+            </TouchableOpacity>
+          </View>
+        </CameraView>
+      )}
     </View>
   );
 }
@@ -65,21 +95,5 @@ const styles = StyleSheet.create({
   },
   camera: {
     flex: 1,
-  },
-  buttonContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    backgroundColor: 'transparent',
-    margin: 64,
-  },
-  button: {
-    flex: 1,
-    alignSelf: 'flex-end',
-    alignItems: 'center',
-  },
-  text: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'white',
-  },
+  }
 });
