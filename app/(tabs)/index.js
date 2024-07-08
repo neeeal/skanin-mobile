@@ -18,12 +18,14 @@ export default function Index() {
 
   const [recentScans, setRecentScans] = useState([
     { id: 1, source: require("../../assets/images/Image (4).png"), route: '/scanDetails/1' },
-    { id: 2, source: require("../../assets/images/Image (4).png"), route: '/scanDetails/2' }
+    { id: 2, source: require("../../assets/images/Image (4).png"), route: '/scanDetails/2' },
+    { id: 3, source: require("../../assets/images/Image (4).png"), route: '/scanDetails/2' }
   ]);
 
   const [grainGallery, setGrainGallery] = useState([
     { id: 1, source: require("../../assets/images/Image (4).png"), route: '/grainDetails/1' },
-    { id: 2, source: require("../../assets/images/Image (4).png"), route: '/grainDetails/2' }
+    { id: 2, source: require("../../assets/images/Image (4).png"), route: '/grainDetails/2' },
+    { id: 3, source: require("../../assets/images/Image (4).png"), route: '/grainDetails/2' }
   ]);
 
   return (
@@ -44,14 +46,14 @@ export default function Index() {
             <View className="p-4 pb-2">
               <View className="flex-row justify-between">
                 <Text style={{fontFamily: 'Montserrat_400Regular'}} className="text-3xl font-bold">Recent Scans</Text>
-                <TouchableOpacity onPress={() => router.push('/recentScans')} className="justify-center">
+                <TouchableOpacity onPress={() => console.log("scan all")} className="justify-center">
                   <Text style={{fontFamily: 'Montserrat_400Regular'}} className="text-xs">View all</Text>
                 </TouchableOpacity>
               </View>
               <View className="border-t-2 max-w-[18%] border-green-600 p-1"></View>
               <ScrollView horizontal={true} className="flex-row">
                 {recentScans.map(scan => (
-                  <TouchableOpacity key={scan.id} onPress={() => router.push(scan.route)} className="pl-2">
+                  <TouchableOpacity key={scan.id} onPress={() => console.log("scan")} className="pl-2">
                     <Image className="rounded-xl ml-2" style={{ width: imageWidth, height: imageWidth }} source={scan.source}></Image>
                   </TouchableOpacity>
                 ))}
@@ -59,15 +61,15 @@ export default function Index() {
             </View>
             <View className="p-4 pt-0">
               <View className="flex-row justify-between">
-                <Text style={{fontFamily: 'Montserrat_400Regular'}} className="text-3xl font-bold">Grain Gallery</Text>
-                <TouchableOpacity onPress={() => router.push('/grainGallery')} className="justify-center">
+                <Text style={{fontFamily: 'Montserrat_400Regular'}} className="text-3xl font-bold">Stress Types</Text>
+                <TouchableOpacity onPress={() => console.log("stress all")} className="justify-center">
                   <Text style={{fontFamily: 'Montserrat_400Regular'}} className="text-xs">View all</Text>
                 </TouchableOpacity>
               </View>
               <View className="border-t-2 max-w-[18%] border-green-600 p-1"></View>
               <ScrollView horizontal={true} className="flex-row">
                 {grainGallery.map(grain => (
-                  <TouchableOpacity key={grain.id} onPress={() => router.push(grain.route)} className="pl-2">
+                  <TouchableOpacity key={grain.id} onPress={() => console.log("stress")} className="pl-2">
                     <Image className="rounded-xl ml-2" style={{ width: imageWidth, height: imageWidth }} source={grain.source}></Image>
                   </TouchableOpacity>
                 ))}
