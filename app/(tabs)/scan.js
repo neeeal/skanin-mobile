@@ -3,6 +3,7 @@ import { Button, StyleSheet, Text, TouchableOpacity, View, ImageBackground } fro
 import { router } from 'expo-router';
 import { Iconify } from 'react-native-iconify';
 import { CameraView, useCameraPermissions } from 'expo-camera';
+import * as MediaLibrary from 'expo-media-library';
 import * as ImagePicker from 'expo-image-picker';
 
 export default function App() {
@@ -10,18 +11,22 @@ export default function App() {
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef(null);
   const [image, setImage] = useState(null);
+  const [libraryPermissionResponse, requestPermissionlibrary] = MediaLibrary.usePermissions();
 
-  if (!permission) {
-    // Camera permissions are still loading.
+  if (!permission || !libraryPermissionResponse) {
     return <View />;
   }
 
-  if (!permission.granted) {
-    // Camera permissions are not granted yet.
+  if (!permission.granted || !libraryPermissionResponse.granted) {
     return (
-      <View style={styles.container}>
-        <Text style={{ textAlign: 'center' }}>We need your permission to show the camera</Text>
-        <Button onPress={requestPermission} title="grant permission" />
+      <View className="bg-gray-800  flex flex-1">
+        <TouchableOpacity  className="flex mx-2 mt-[13%] mb-[8%] p-2 self-start absolute" onPress={goBack}>
+          <Iconify icon="ion:chevron-back-circle-sharp" size={54} color={"#FFFFFF"} />
+        </TouchableOpacity>
+        <View className="flex flex-1 justify-center items-center">
+          <Text className="text-white">We need your permission to show the camera</Text>
+          <TouchableOpacity className="w-[50%] border border-black mt-2 p-1 rounded-xl bg-[#049B04]"><Text className="text-white text-center">Grant Permission</Text></TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -35,14 +40,14 @@ export default function App() {
     let photo = await cameraRef.current.takePictureAsync();
     setImage(photo.uri);
     console.log(photo.uri);
+    MediaLibrary.saveToLibraryAsync(photo.uri)
   }
 
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3],
+      // aspect: [4, 3],
       quality: 1,
     });
 
@@ -62,10 +67,10 @@ export default function App() {
     <View style={styles.container}>
       {image ? (
         <ImageBackground source={{ uri: image }} style={styles.camera} >
-                    <TouchableOpacity  className="flex mx-2 mt-[13%] mb-[8%] p-2 self-start absolute" onPress={goBack}>
+          <TouchableOpacity  className="flex mx-2 mt-[13%] mb-[8%] p-2 self-start absolute" onPress={goBack}>
             <Iconify icon="ion:chevron-back-circle-sharp" size={54} color={"#FFFFFF"} />
           </TouchableOpacity>
-          </ImageBackground>
+        </ImageBackground>
       ) : (
         <CameraView style={styles.camera} facing={facing} ref={cameraRef} mute={true}>
           <TouchableOpacity onPress={() => router.back()} className="flex mx-2 mt-[13%] mb-[8%] p-2 self-start absolute">
