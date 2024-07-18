@@ -194,7 +194,7 @@ export default function App() {
           mute={true}
         >
           <TouchableOpacity
-            onPress={() => router.back()}
+            onPress={goBack}
             className="flex mx-2 mt-[13%] mb-[8%] p-2 self-start absolute"
           >
             <Iconify
