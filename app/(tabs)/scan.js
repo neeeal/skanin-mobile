@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -19,7 +19,7 @@ export default function App() {
   const cameraRef = useRef(null);
   const [image, setImage] = useState(null);
   const [expand, setExpand] = useState(null);
-  const [libraryPermissionResponse, requestPermissionlibrary] =
+  const [libraryPermission, requestPermissionlibrary] =
     MediaLibrary.usePermissions();
   const [findings, setFindings] = useState({
     id: 0,
@@ -34,11 +34,16 @@ export default function App() {
 • Systemic Fungicides: Use judiciously, such as triazoles and strobilurins, particularly during heading stage for effective control.`,
   });
 
-  if (!permission || !libraryPermissionResponse) {
+  if (!permission || !libraryPermission) {
     return <View />;
   }
 
-  if (!permission.granted || !libraryPermissionResponse.granted) {
+  const tryPermission = () => {
+    requestPermission(oldPermission=>useCameraPermissions());
+    requestPermissionlibrary(oldPermission=>MediaLibrary.usePermissions());
+  }
+
+  if (!permission.granted || !libraryPermission.granted) {
     return (
       <View className="bg-gray-800  flex flex-1">
         <TouchableOpacity
@@ -56,7 +61,7 @@ export default function App() {
             
             We need your permission to show the camera
           </Text>
-          <TouchableOpacity className="w-[50%] border border-black mt-2 p-1 rounded-xl bg-[#049B04]">
+          <TouchableOpacity className="w-[50%] border border-black mt-2 p-1 rounded-xl bg-[#049B04]" onPress={tryPermission}>
             
             <Text className="text-white text-center"> Grant Permission </Text>
           </TouchableOpacity>
