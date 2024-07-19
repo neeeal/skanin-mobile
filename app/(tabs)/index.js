@@ -46,7 +46,7 @@ export default function Index() {
             <View className="p-4 pb-2">
               <View className="flex-row justify-between">
                 <Text style={{fontFamily: 'Montserrat_400Regular'}} className="text-3xl font-bold">Recent Scans</Text>
-                <TouchableOpacity onPress={() => console.log("scan all")} className="justify-center">
+                <TouchableOpacity onPress={() => router.push("/history")} className="justify-center">
                   <Text style={{fontFamily: 'Montserrat_400Regular'}} className="text-xs">View all</Text>
                 </TouchableOpacity>
               </View>
@@ -62,7 +62,7 @@ export default function Index() {
             <View className="p-4 pt-0">
               <View className="flex-row justify-between">
                 <Text style={{fontFamily: 'Montserrat_400Regular'}} className="text-3xl font-bold">Stress Types</Text>
-                <TouchableOpacity onPress={() => console.log("stress all")} className="justify-center">
+                <TouchableOpacity onPress={() => router.push("/types")} className="justify-center">
                   <Text style={{fontFamily: 'Montserrat_400Regular'}} className="text-xs">View all</Text>
                 </TouchableOpacity>
               </View>

@@ -5,10 +5,8 @@ import {
   View, 
   Image,
   TouchableOpacity, 
-  Dimensions,
-  TextInput
+  Dimensions
 } from "react-native";
-import { useFontContext } from '../../ftx';
 import { useSession } from '../../ctx';
 import { Iconify } from 'react-native-iconify';
 import Lock from '../../assets/svg/Lock.svg';
@@ -18,7 +16,6 @@ import EditFieldModal from "../../components/modal/editEntry.js"
 
 export default function Profile() {
   const { signOut } = useSession();
-  const [isEditing, setIsEditing] = useState(false);
   const [userDetails, setUserDetails] = useState({
     name: "Mathilda Brown",
     position: "Agronomist",
@@ -48,19 +45,12 @@ export default function Profile() {
 
   const [selectedImage, setSelectedImage] = useState(null);
 
-  const { fontsLoaded } = useFontContext();
-
-  if (!fontsLoaded) {
-    return <AppLoading />;
-  }
-
   const imageWidth = parseInt(Dimensions.get('window').width / 3);
   
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      // aspect: [4, 3],
       quality: 1,
     });
 

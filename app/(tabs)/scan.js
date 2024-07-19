@@ -38,9 +38,9 @@ export default function App() {
     return <View />;
   }
 
-  const tryPermission = () => {
-    requestPermission(oldPermission=>useCameraPermissions());
-    requestPermissionlibrary(oldPermission=>MediaLibrary.usePermissions());
+  function useGetPermission(){
+    requestPermission(useCameraPermissions());
+    requestPermissionlibrary(MediaLibrary.usePermissions());
   }
 
   if (!permission.granted || !libraryPermission.granted) {
@@ -61,7 +61,7 @@ export default function App() {
             
             We need your permission to show the camera
           </Text>
-          <TouchableOpacity className="w-[50%] border border-black mt-2 p-1 rounded-xl bg-[#049B04]" onPress={tryPermission}>
+          <TouchableOpacity className="w-[50%] border border-black mt-2 p-1 rounded-xl bg-[#049B04]" onPress={useGetPermission}>
             
             <Text className="text-white text-center"> Grant Permission </Text>
           </TouchableOpacity>
@@ -86,8 +86,9 @@ export default function App() {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      // aspect: [4, 3],
+      aspect: [1, 1],
       quality: 1,
+      selectionLimit: 1
     });
 
     console.log(result);
