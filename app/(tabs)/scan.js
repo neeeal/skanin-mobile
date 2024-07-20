@@ -39,8 +39,8 @@ export default function App() {
   }
 
   function useGetPermission(){
-    requestPermission(useCameraPermissions());
-    requestPermissionlibrary(MediaLibrary.usePermissions());
+    requestPermission(()=>useCameraPermissions());
+    requestPermissionlibrary(()=>MediaLibrary.usePermissions());
   }
 
   if (!permission.granted || !libraryPermission.granted) {
