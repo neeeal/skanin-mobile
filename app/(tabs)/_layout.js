@@ -31,7 +31,9 @@ export default function AppLayout() {
       tabBarActiveBackgroundColor: 'white',
       tabBarStyle:{
         backgroundColor: '#049B04',
-        borderRadius:16
+        borderTopRightRadius: 16,
+        borderTopLeftRadius: 16,
+        minHeight: "8%"      
       }, 
       tabBarShowLabel: false,
     }}>
@@ -40,7 +42,7 @@ export default function AppLayout() {
         options={{
           title: 'Home',
           headerShown: false,
-          tabBarIcon: ({ color }) => <Iconify icon="ic:baseline-home" size={24} color={color} />,
+          tabBarIcon: ({ color }) => <Iconify icon="ic:baseline-home" size={36} color={color} />,
         }}
       />
       <Tabs.Screen
@@ -49,7 +51,7 @@ export default function AppLayout() {
           title: 'Scan',
           headerShown: false,
           tabBarStyle: {display:"none"},
-          tabBarIcon: ({ color }) => <Iconify icon="mingcute:scan-fill" size={24} color={color} />,
+          tabBarIcon: ({ color }) => <Iconify icon="mingcute:scan-fill" size={36} color={color} />,
         }}
       />
       <Tabs.Screen
@@ -57,7 +59,7 @@ export default function AppLayout() {
         options={{
           title: 'Profile',
           headerShown: false,
-          tabBarIcon: ({ color }) => <Iconify icon="material-symbols:person" size={24} color={color} />,
+          tabBarIcon: ({ color }) => <Iconify icon="material-symbols:person" size={36} color={color} />,
         }}
       />
       <Tabs.Screen
@@ -65,7 +67,6 @@ export default function AppLayout() {
         options={{
           title: 'History',
           headerShown: false,
-          tabBarStyle: {display:"none"},
           href: null,
           tabBarIcon: ({ color }) => <Iconify icon="mdi:heart" size={24} color={color} />,
         }}
@@ -75,7 +76,6 @@ export default function AppLayout() {
         options={{
           title: 'Types',
           headerShown: false,
-          tabBarStyle: {display:"none"},
           href: null,
           tabBarIcon: ({ color }) => <Iconify icon="mdi:heart" size={24} color={color} />,
         }}
