@@ -291,7 +291,7 @@ recommendation: `1. Preventing Outbreaks:
 
     <View className="flex mt-16 ">
     <View className="flex px-6 pb-6">
-      <Text className="text-4xl" style={{fontFamily: 'Montserrat_700Bold'}}>Grain Gallery</Text>
+      <Text className="text-4xl" style={{fontFamily: 'Montserrat_700Bold'}}>Stress Types</Text>
     </View>
 
     <View className="flexk px-6 min-h-[66%]">
