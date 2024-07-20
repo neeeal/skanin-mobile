@@ -67,6 +67,7 @@ export default function AppLayout() {
         options={{
           title: 'History',
           headerShown: false,
+          tabBarStyle: {display:"none"},
           href: null,
           tabBarIcon: ({ color }) => <Iconify icon="mdi:heart" size={24} color={color} />,
         }}
@@ -76,6 +77,7 @@ export default function AppLayout() {
         options={{
           title: 'Types',
           headerShown: false,
+          tabBarStyle: {display:"none"},
           href: null,
           tabBarIcon: ({ color }) => <Iconify icon="mdi:heart" size={24} color={color} />,
         }}
