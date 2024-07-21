@@ -81,6 +81,16 @@ export default function AppLayout() {
           href: null,
           tabBarIcon: ({ color }) => <Iconify icon="mdi:heart" size={24} color={color} />,
         }}
+      /> 
+      <Tabs.Screen
+        name="dataDisplay"
+        options={{
+          title: 'DataDisplay',
+          headerShown: false,
+          tabBarStyle: {display:"none"},
+          href: null,
+          tabBarIcon: ({ color }) => <Iconify icon="mdi:heart" size={24} color={color} />,
+        }}
       />
     </Tabs>
 }
