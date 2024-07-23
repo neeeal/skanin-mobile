@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import { Text, View, ImageBackground, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useSession } from '../ctx';
 import { useFontContext } from '../ftx';

@@ -5,7 +5,8 @@ import {
   View, 
   Image,
   TouchableOpacity, 
-  Dimensions
+  Dimensions,
+  Alert
 } from "react-native";
 import { useSession } from '../../ctx';
 import { Iconify } from 'react-native-iconify';
@@ -13,9 +14,12 @@ import Lock from '../../assets/svg/Lock.svg';
 import Email from '../../assets/svg/Email.svg';
 import * as ImagePicker from "expo-image-picker";
 import EditFieldModal from "../../components/modal/editEntry.js"
+import { router } from 'expo-router';
+import make_request from '../../helpers/url_server';
+import { LOGOUT } from '../../helpers/urls';
 
 export default function Profile() {
-  const { signOut } = useSession();
+  const { signOut, session } = useSession();
   const [userDetails, setUserDetails] = useState({
     name: "Mathilda Brown",
     position: "Agronomist",
@@ -60,6 +64,45 @@ export default function Profile() {
       setSelectedImage(result.assets[0].uri);
     }
   };
+
+  const logoutLogic = async () => {
+    let response;
+    console.log("SESSION HERE", session)
+    console.log({
+      body: {
+        token: session.token,
+        _id: session.userId
+      }
+    })
+    try {
+      response = await make_request({
+        relative_url: LOGOUT,
+        body: {
+          token: session.token,
+          _id: session.userId
+        },
+        method: 'POST'
+      });
+      console.log('Logout successful:', response);;
+    } catch (err) {
+      if (err.message.includes("Invalid session. Please log in again.")) {
+        Alert.alert('Already Logged Out', "Redirecting to Home");
+        return {status:200}
+      }
+    }
+    return {status:200}
+  }
+
+  const onPressLogout = async () => {
+    result = await logoutLogic()
+    Alert.alert('Logout', JSON.stringify(session));
+    signOut();
+    console.log("clicked", session);
+    // if (!session.token || !session.userId){
+    router.replace("/login")
+    console.log("after", session);
+    // }
+  }
     
   return (
     <View className="flex h-full w-full justify-center align-center bg-white px-8 pt-8">
@@ -126,7 +169,7 @@ export default function Profile() {
         </View>
           
         <View className="border-b border-[#808080] w-full p-4 bg-[#D7DFC9] " >
-          <TouchableOpacity onPress={() => signOut()} className="flex-row max-w-[40%]" >
+          <TouchableOpacity onPress={onPressLogout} className="flex-row max-w-[40%]" >
             <Iconify icon="majesticons:logout" size={32} color={"#086608"} />
             <Text style={{fontFamily: 'Montserrat_400Regular'}} className="font-base pl-3 text-black self-center">Logout</Text>
           </TouchableOpacity>
@@ -145,18 +188,3 @@ export default function Profile() {
     </View>
   );
 }
-
-// export default function Profile() {
-//   const { signOut } = useSession();
-//   return (
-//     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-//       <Text
-//         onPress={() => {
-
-//           signOut();
-//         }}>
-//         Sign Out
-//       </Text>
-//     </View>
-//   );
-// }
