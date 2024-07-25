@@ -173,8 +173,8 @@ export default function Types() {
         />
       </TouchableOpacity>
 
-      <View className="flex w-full h-full justify-center">
-        <View className="flex mt-16">
+      <View className="flex w-full h-full justify-center ">
+        <View className="flex mt-16 min-h-[68%]">
           <View className="flex px-6 pb-6">
             <Text className="text-4xl" style={{ fontFamily: 'Montserrat_700Bold' }}>Stress Types</Text>
           </View>

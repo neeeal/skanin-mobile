@@ -83,44 +83,41 @@ export default function Index() {
                 </View>
               </ImageBackground>
             </View>
-            { 
-              isLoading ? <ActivityIndicator size="large" color="#0000ff" /> :
-              <>
-                <View className="p-4 pb-2">
-                  <View className="flex-row justify-between">
-                    <Text style={{fontFamily: 'Montserrat_400Regular'}} className="text-3xl font-bold">Recent Scans</Text>
-                    <TouchableOpacity onPress={() => router.replace("/history")} className="justify-center">
-                      <Text style={{fontFamily: 'Montserrat_400Regular'}} className="text-xs">View all</Text>
-                    </TouchableOpacity>
-                  </View>
-                  <View className="border-t-2 max-w-[18%] border-green-600 p-1"></View>
-                  <ScrollView horizontal={true} className="flex-row">
-                    {recentScans.map(scan => (
-                      <TouchableOpacity key={scan._id} onPress={() => router.push({pathname:`/dataDisplay`, params:scan})} className="pl-2">
-                        <Image className="rounded-xl ml-2" style={{ width: imageWidth, height: imageWidth }} source={{uri: `data:image/png;base64,${scan.rice_image}`}}></Image>
-                      </TouchableOpacity>
-                    ))}
-                  </ScrollView>
-                </View>
-                <View className="p-4 pt-0">
-                  <View className="flex-row justify-between">
-                    <Text style={{fontFamily: 'Montserrat_400Regular'}} className="text-3xl font-bold">Stress Types</Text>
-                    <TouchableOpacity onPress={() => router.replace("/types")} className="justify-center">
-                      <Text style={{fontFamily: 'Montserrat_400Regular'}} className="text-xs">View all</Text>
-                    </TouchableOpacity>
-                  </View>
-                  <View className="border-t-2 max-w-[18%] border-green-600 p-1"></View>
-                  <ScrollView horizontal={true} className="flex-row">
-                    {grainGallery.map(grain => (
-                      <TouchableOpacity key={grain._id} onPress={() => router.push({pathname:`/dataDisplay`, params:grain})} className="pl-2">
-                        <Image className="rounded-xl ml-2" style={{ width: imageWidth, height: imageWidth }} source={{uri: `data:image/png;base64,${grain.rice_image}`}}></Image>
-                      </TouchableOpacity>
-                    ))}
-                  </ScrollView>
-                </View>
-              </>
-            }
-          </View>
+                    <View className="p-4 pb-2">
+                      <View className="flex-row justify-between">
+                        <Text style={{fontFamily: 'Montserrat_400Regular'}} className="text-3xl font-bold">Recent Scans</Text>
+                        <TouchableOpacity onPress={() => router.replace("/history")} className="justify-center">
+                          <Text style={{fontFamily: 'Montserrat_400Regular'}} className="text-xs">View all</Text>
+                        </TouchableOpacity>
+                      </View>
+                      <View className="border-t-2 max-w-[18%] border-green-600 p-1"></View>
+                      <ScrollView horizontal={true} className="flex-row">
+                        {isLoading ? <ActivityIndicator size="large" color="#0000ff" /> :
+                        recentScans.map(scan => (
+                          <TouchableOpacity key={scan._id} onPress={() => router.push({pathname:`/dataDisplay`, params:scan})} className="pl-2">
+                            <Image className="rounded-xl ml-2" style={{ width: imageWidth, height: imageWidth }} source={{uri: `data:image/png;base64,${scan.rice_image}`}}></Image>
+                          </TouchableOpacity>
+                        ))}
+                      </ScrollView>
+                    </View>
+                    <View className="p-4 pt-0">
+                      <View className="flex-row justify-between">
+                        <Text style={{fontFamily: 'Montserrat_400Regular'}} className="text-3xl font-bold">Stress Types</Text>
+                        <TouchableOpacity onPress={() => router.replace("/types")} className="justify-center">
+                          <Text style={{fontFamily: 'Montserrat_400Regular'}} className="text-xs">View all</Text>
+                        </TouchableOpacity>
+                      </View>
+                      <View className="border-t-2 max-w-[18%] border-green-600 p-1"></View>
+                      <ScrollView horizontal={true} className="flex-row">
+                        {isLoading ? <ActivityIndicator size="large" color="#0000ff" /> : 
+                        grainGallery.map(grain => (
+                          <TouchableOpacity key={grain._id} onPress={() => router.push({pathname:`/dataDisplay`, params:grain})} className="pl-2">
+                            <Image className="rounded-xl ml-2" style={{ width: imageWidth, height: imageWidth }} source={{uri: `data:image/png;base64,${grain.rice_image}`}}></Image>
+                          </TouchableOpacity>
+                        ))}
+                      </ScrollView>
+                    </View>
+              </View>
         </>
       </ScrollView>
     </SafeAreaView>
