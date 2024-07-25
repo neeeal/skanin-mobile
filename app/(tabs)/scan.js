@@ -7,6 +7,7 @@ import {
   View,
   ImageBackground,
   ActivityIndicator,
+  Alert
 } from "react-native";
 import { useSession } from '../../ctx';
 import { router } from "expo-router";
@@ -103,6 +104,7 @@ export default function App() {
     setIsLoading(true);
     console.log("CAPTURED");
     let photo = await cameraRef.current.takePictureAsync({ base64: true, quality: 1 });
+    setImage(photo.uri);
     await MediaLibrary.saveToLibraryAsync(photo.uri);
   
     const result = await recommendationLogic(photo.base64);
@@ -116,7 +118,6 @@ export default function App() {
       level: result.data.level || 0
     })
     setIsLoading(false);
-    setImage(photo.uri);
   };
   
   const pickImage = async () => {
@@ -135,6 +136,7 @@ export default function App() {
       
       // Convert to base64
       const base64String = await FileSystem.readAsStringAsync(uri, { encoding: FileSystem.EncodingType.Base64 });
+      setImage(uri);
 
       const result = await recommendationLogic(base64String);
   
@@ -146,7 +148,6 @@ export default function App() {
         level: result.data.level || 0
       })
       setIsLoading(false);
-      setImage(uri);
       // }
   };
 
@@ -171,9 +172,6 @@ export default function App() {
           }}
           style={styles.camera}
         >
-          
-          {expand ? (
-            <>
               <TouchableOpacity
                 className="flex mx-2 mt-[13%] mb-[8%] p-2 self-start absolute"
                 onPress={goBack}
@@ -184,6 +182,14 @@ export default function App() {
                   color={"#FFFFFF"}
                 />
               </TouchableOpacity>
+          {isLoading ? (
+            <View className="flex border border-black h-full justify-end pb-24">
+              <ActivityIndicator size="large" color="#0000ff" />
+            </View>
+          ) :
+              (expand ? (
+            <>
+
               <View className="absolute w-full flex bottom-0 h-[45%] bg-white rounded-t-[40px] p-6">
                 <ScrollView>
                   <Text className="text-[#049B04] text-4xl font-bold text-center">
@@ -217,7 +223,7 @@ export default function App() {
                   color={"#FFFFFF"}
                 />
               </TouchableOpacity>
-              <View className="absolute bottom-16 flex flex-row w-3/4 left-12 justify-between px-8 bg-[#ffffff55] backdrop-blur-lg rounded-2xl py-4">
+              <View className="absolute bottom-16 flex flex-row w-3/4 left-12 justify-between px-8 bg-[#ffffffcc] backdrop-blur-lg rounded-2xl py-4">
                 <View>
                   <Text className="text-[#086608] text-2xl font-bold pb-1">
                     
@@ -237,7 +243,7 @@ export default function App() {
                 </TouchableOpacity>
               </View>
             </>
-          )}
+          ))}
         </ImageBackground>
       ) : (
         <CameraView
@@ -257,9 +263,7 @@ export default function App() {
             />
           </TouchableOpacity>
           <View className="absolute w-[100%] h-[10%] flex-row p-1 bottom-0 rounded-3xl justify-evenly items-center bg-white">
-            {
-              isLoading ? <ActivityIndicator size="large" color="#0000ff" /> :
-              <>
+
                 <TouchableOpacity className="rounded-full p-1" onPress={pickImage}>
                   <Iconify
                     icon="iconoir:media-image-plus"
@@ -279,8 +283,7 @@ export default function App() {
                 >
                   <Iconify icon="eva:flip-fill" size={30} color={"#049B04"} />
                 </TouchableOpacity>
-              </>
-            }
+
           </View>
         </CameraView>
       )}

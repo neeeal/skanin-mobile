@@ -5,6 +5,7 @@ export const BASE_URL = 'https://grubworm-full-dory.ngrok-free.app/api/'
 
 // History
 export const GET_HISTORY = `${BASE_URL}history/get_history_with_images`;
+export const GET_HOME_DATA = `${BASE_URL}history/get_latest_home_data`;
 
 // Recommendation
 export const SCAN_IMAGE = `${BASE_URL}recommendation/skan`;
