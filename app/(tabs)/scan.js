@@ -6,14 +6,21 @@ import {
   TouchableOpacity,
   View,
   ImageBackground,
+  ActivityIndicator,
 } from "react-native";
+import { useSession } from '../../ctx';
 import { router } from "expo-router";
 import { Iconify } from "react-native-iconify";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import * as ImagePicker from "expo-image-picker";
+import make_request from '../../helpers/url_server';
+import { SCAN_IMAGE } from '../../helpers/urls';
+import * as FileSystem from 'expo-file-system';
 
 export default function App() {
+  const { session } = useSession();
+  const [isLoading, setIsLoading] = useState(false);
   const [facing, setFacing] = useState("back");
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef(null);
@@ -21,18 +28,7 @@ export default function App() {
   const [expand, setExpand] = useState(null);
   const [libraryPermission, requestPermissionlibrary] =
     MediaLibrary.usePermissions();
-  const [findings, setFindings] = useState({
-    id: 0,
-    classification: "False Smut",
-    type: "Biotic Stress",
-    recommendations: `1. Plant Resistant Varieties: Use resistant rice varieties; consult local agricultural authorities for updated lists.
-2. Crop Management Measures:
-• Adjust Planting Time: Sow seeds early in the rainy season.
-• Nitrogen Fertilizer Application: Split into multiple treatments to avoid excessive use.
-• Field Flooding: Flood the field as frequently as possible.
-• Silicon Fertilizers: Apply to silicon-deficient soils. Consider cost-effective sources like rice genotypes high in silicon. Avoid using infected straw as a silicon source.
-• Systemic Fungicides: Use judiciously, such as triazoles and strobilurins, particularly during heading stage for effective control.`,
-  });
+  const [findings, setFindings] = useState(null);
 
   if (!permission || !libraryPermission) {
     return <View />;
@@ -74,39 +70,95 @@ export default function App() {
     setFacing((current) => (current === "back" ? "front" : "back"));
   };
 
-  const captureImage = async () => {
-    console.log("CAPTURED");
-    let photo = await cameraRef.current.takePictureAsync();
-    setImage(photo.uri);
-    console.log(photo.uri);
-    MediaLibrary.saveToLibraryAsync(photo.uri);
-  };
+  const recommendationLogic = async (image) => {
+    console.log("SESSION HERE", session);
+    if (!session || !session.token || !session.userId) {
+      Alert.alert("Error", "Session is invalid. Please logout and log in again.");
+      return { status: 400 };
+    }
+  
+    let response;
+    try {
+      response = await make_request({
+        relative_url: SCAN_IMAGE,
+        body: { image: image, _id: session.userId },
+        HEADERS: { 'Authorization': `Bearer ${session.token}` },
+        method: 'POST'
+      });
+      console.log('Scan successful:', response);
+    } catch (err) {
+      console.error("Error during scanning:", err);
+      Alert.alert("Error", "Scanning and getting recommendation failed.");
+      return { status: 400 };
+    }
+    response.data.recommendation = response.data.recommendation.replace(/\\n/g, '\n\n');
+    // console.log(newdata);
+    // response.data.recommendation = response.data.recommendation
 
+    // console.log("HERE NOW", );
+    return { status: 200, data: response.data };
+  };
+  
+  const captureImage = async () => {
+    setIsLoading(true);
+    console.log("CAPTURED");
+    let photo = await cameraRef.current.takePictureAsync({ base64: true, quality: 1 });
+    await MediaLibrary.saveToLibraryAsync(photo.uri);
+  
+    const result = await recommendationLogic(photo.base64);
+    // console.log("Recommendation result:", result);
+
+    setFindings({
+      id: result.data._id,
+      classification: result.data.stress_name,
+      type: result.data.stress_type,
+      recommendation: result.data.recommendation,
+      level: result.data.level || 0
+    })
+    setIsLoading(false);
+    setImage(photo.uri);
+  };
+  
   const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
+    setIsLoading(true);
+    let pickedImage = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [1, 1],
       quality: 1,
-      selectionLimit: 1
     });
 
-    console.log(result);
+    console.log(pickedImage);
 
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-    }
+    // if (!result.canceled) {
+      const { uri } = pickedImage.assets[0];
+      
+      // Convert to base64
+      const base64String = await FileSystem.readAsStringAsync(uri, { encoding: FileSystem.EncodingType.Base64 });
+
+      const result = await recommendationLogic(base64String);
+  
+      setFindings({
+        id: result.data._id,
+        classification: result.data.stress_name,
+        type: result.data.stress_type,
+        recommendation: result.data.recommendation,
+        level: result.data.level || 0
+      })
+      setIsLoading(false);
+      setImage(uri);
+      // }
   };
 
   const goBack = () => {
     router.back();
     setExpand(null);
     setImage(null);
+    setIsLoading(false);
   };
 
   const goExpand = () => {
     setExpand(true);
-    console.log(expand);
   };
 
   return (
@@ -146,9 +198,9 @@ export default function App() {
                     
                     Recommendations:
                   </Text>
-                  <Text className="text-left text-sm">
+                  <Text className="text-left text-sm" >
                     
-                    {findings.recommendations}
+                    {findings.recommendation}
                   </Text>
                 </ScrollView>
               </View>
@@ -205,25 +257,30 @@ export default function App() {
             />
           </TouchableOpacity>
           <View className="absolute w-[100%] h-[10%] flex-row p-1 bottom-0 rounded-3xl justify-evenly items-center bg-white">
-            <TouchableOpacity className="rounded-full p-1" onPress={pickImage}>
-              <Iconify
-                icon="iconoir:media-image-plus"
-                size={34}
-                color={"#049B04"}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              className="rounded-full bg-[#049B04] p-3"
-              onPress={captureImage}
-            >
-              <Iconify icon="ion:camera-sharp" size={44} w color={"#ffffff"} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              className="rounded-full p-1"
-              onPress={toggleCameraFacing}
-            >
-              <Iconify icon="eva:flip-fill" size={30} color={"#049B04"} />
-            </TouchableOpacity>
+            {
+              isLoading ? <ActivityIndicator size="large" color="#0000ff" /> :
+              <>
+                <TouchableOpacity className="rounded-full p-1" onPress={pickImage}>
+                  <Iconify
+                    icon="iconoir:media-image-plus"
+                    size={34}
+                    color={"#049B04"}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  className="rounded-full bg-[#049B04] p-3"
+                  onPress={captureImage}
+                >
+                  <Iconify icon="ion:camera-sharp" size={44} w color={"#ffffff"} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  className="rounded-full p-1"
+                  onPress={toggleCameraFacing}
+                >
+                  <Iconify icon="eva:flip-fill" size={30} color={"#049B04"} />
+                </TouchableOpacity>
+              </>
+            }
           </View>
         </CameraView>
       )}
