@@ -9,6 +9,7 @@ export const GET_HOME_DATA = `${BASE_URL}history/get_latest_home_data`;
 
 // Recommendation
 export const SCAN_IMAGE = `${BASE_URL}recommendation/skan`;
+export const GET_TYPES = `${BASE_URL}recommendation/get_types`;
 
 // Users
 export const REGISTER = `${BASE_URL}users/signup`;
