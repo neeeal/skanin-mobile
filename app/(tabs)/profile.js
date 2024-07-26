@@ -209,11 +209,13 @@ export default function Profile() {
       <View className="flex min-h-[45%] items-center bg-[#D9D9D9] rounded-xl">
         
       <View className="flex-row border-b border-[#808080] w-full justify-between p-4 bg-[#D7DFC9] items rounded-t-xl">
-        <View className="align-right flex-row">
+        <View className="align-right flex-row flex-1">
           <Email width="28" height="28" />
           <Text
-            style={{ fontFamily: 'Montserrat_400Regular' }}
-            className="font-base pl-4 text-black self-center"
+            style={{ fontFamily: 'Montserrat_400Regular', overflow: 'hidden' }}
+            className="font-base pl-4 text-black self-center max-w-[95%]"
+            numberOfLines={1}
+            ellipsizeMode="tail" 
           >
             {userDetails.email}
           </Text>

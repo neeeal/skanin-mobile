@@ -58,7 +58,7 @@ export default function App() {
             
             We need your permission to show the camera
           </Text>
-          <TouchableOpacity className="w-[50%] border border-black mt-2 p-1 rounded-xl bg-[#049B04]" onPress={useGetPermission}>
+          <TouchableOpacity className="w-[50%] mt-2 p-1 rounded-xl bg-[#049B04]" onPress={useGetPermission}>
             
             <Text className="text-white text-center"> Grant Permission </Text>
           </TouchableOpacity>
@@ -183,7 +183,7 @@ export default function App() {
                 />
               </TouchableOpacity>
           {isLoading ? (
-            <View className="flex flex-1 border border-black justify-end mt-[30%] pb-24">
+            <View className="flex flex-1  justify-end mt-[30%] pb-24">
               <ActivityIndicator size="large" color="#0000ff" />
             </View>
           ) :

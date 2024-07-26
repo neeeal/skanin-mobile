@@ -8,7 +8,8 @@ import {
     TextInput, 
     KeyboardAvoidingView, 
     Platform,
-    Image
+    Image,
+    Alert
 } from 'react-native';
 import { useFontContext } from '../ftx';
 import { Iconify } from 'react-native-iconify';
@@ -54,6 +55,7 @@ export default function ForgotPassword() {
         <TouchableOpacity 
           onPress={() => {
             // TODO: Add login logic
+            Alert.alert('Under Development', 'This feature is still under development. Please contact the developers for further information or other concerns.');
             router.push("/login");
           }} 
           className="bg-[#049B04] rounded-3xl py-3 my-2 w-[80%]"

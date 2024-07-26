@@ -124,15 +124,14 @@ export default function Signup() {
         source={require('../assets/images/signIn 4.png')} 
         className="flex-1 object-cover absolute top-0 right-0 bottom-0 left-0"
       >
-        <View className="flex-1 justify-center items-center pb-40">
           <TouchableOpacity 
             onPress={() => router.back()} 
-            className="flex mx-2 mt-[13%] mb-[8%] p-2 self-start "
+            className="flex mx-2 mt-[13%] mb-[8%] p-2 self-start absolute"
           >
             <Iconify icon="ion:chevron-back-circle-sharp" size={54} color={"#FFFFFF"} />
           </TouchableOpacity>
-          
-          <View className="mb-16 border">
+        <View className="flex-1 justify-center items-center pb-40 pt-40">          
+          <View className="mb-16 ">
             <Text style={{ fontFamily: 'Montserrat_400Regular' }} className="text-center text-[#049B04] text-4xl font-bold">Create Account</Text>
             <Text style={{ fontFamily: 'Montserrat_400Regular', textShadowColor: 'rgba(0, 0, 0, 0.40)', textShadowOffset: { width: -1, height: 1 }, textShadowRadius: 5 }} className="text-xs text-center text-white">Enter your complete details to register</Text>
           </View>
