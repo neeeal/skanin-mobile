@@ -205,7 +205,7 @@ export default function History() {
       <Text className="text-4xl" style={{fontFamily: 'Montserrat_700Bold'}}>History</Text>
     </View>
 
-    <View className="flexk px-6 min-h-[66%]">
+    <View className="flex px-6 min-h-[66%] ">
               
       {isLoading ? <ActivityIndicator size="large" color="#0000ff" /> :
         (displayedData.map((item, index)=>(
@@ -216,9 +216,12 @@ export default function History() {
                 className=" rounded-l-2xl"
               />
             </View>
-            <View className="flex-col pl-8 justify-center">
+            <View className="flex-col pl-8 justify-center min-w-[75%]">
               <Text className="text-[#049B04] text-2xl" style={{fontFamily: 'Montserrat_600SemiBold'}}>{item.stress_name}</Text>
-              <Text className="text-base" style={{fontFamily: 'Montserrat_400Regular'}}>{item.stress_type}</Text>
+              <View className="flex-row justify-between pr-2">
+                <Text className="text-xs" style={{fontFamily: 'Montserrat_400Regular'}}>{item.stress_type}</Text>
+                <Text className="text-xs" style={{fontFamily: 'Montserrat_400Regular'}}>{item.date_transaction}</Text>
+              </View>
             </View>
           </TouchableOpacity>        
         )))
