@@ -183,7 +183,7 @@ export default function App() {
                 />
               </TouchableOpacity>
           {isLoading ? (
-            <View className="flex border border-black h-full justify-end pb-24">
+            <View className="flex flex-1 border border-black justify-end mt-[30%] pb-24">
               <ActivityIndicator size="large" color="#0000ff" />
             </View>
           ) :

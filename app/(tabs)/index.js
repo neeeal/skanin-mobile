@@ -8,7 +8,8 @@ import {
   ScrollView,
   Dimensions,
   ActivityIndicator,
-  SafeAreaView
+  SafeAreaView,
+  Alert
 } from 'react-native';
 import { router } from 'expo-router';
 import { Iconify } from "react-native-iconify";

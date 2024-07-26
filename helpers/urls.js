@@ -16,4 +16,4 @@ export const REGISTER = `${BASE_URL}users/signup`;
 export const LOGIN = `${BASE_URL}users/login`;
 export const LOGOUT = `${BASE_URL}users/logout`;
 export const GET_ONE_USER = `${BASE_URL}users/get_user`;
-export const UPDATE_ONE_USER = `${BASE_URL}users/get_user/update_user`;
+export const UPDATE_ONE_USER = `${BASE_URL}users/update_user`;

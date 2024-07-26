@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useEffect } from "react";
 // import { StyleSheet, Text, View } from "react-native";
 import { 
   Text, 
@@ -16,16 +16,17 @@ import * as ImagePicker from "expo-image-picker";
 import EditFieldModal from "../../components/modal/editEntry.js"
 import { router } from 'expo-router';
 import make_request from '../../helpers/url_server';
-import { LOGOUT } from '../../helpers/urls';
+import { LOGOUT, UPDATE_ONE_USER, GET_ONE_USER } from '../../helpers/urls';
+import * as FileSystem from 'expo-file-system';
 
 export default function Profile() {
   const { signOut, session } = useSession();
   const [userDetails, setUserDetails] = useState({
-    name: "Mathilda Brown",
-    position: "Agronomist",
-    email: "test@test.com",
-    contact: "+63 912 346 6789",
-    password: "xxxx",
+    name: null,
+    position: null,
+    email: null,
+    contact: null,
+    password: null,
   });
   const [isModalVisible, setModalVisible] = useState(false);
   const [fieldToEdit, setFieldToEdit] = useState(null);
@@ -50,20 +51,6 @@ export default function Profile() {
   const [selectedImage, setSelectedImage] = useState(null);
 
   const imageWidth = parseInt(Dimensions.get('window').width / 3);
-  
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      quality: 1,
-    });
-
-    console.log(result);
-
-    if (!result.canceled) {
-      setSelectedImage(result.assets[0].uri);
-    }
-  };
 
   const logoutLogic = async () => {
     let response;
@@ -103,6 +90,97 @@ export default function Profile() {
     console.log("after", session);
     // }
   }
+
+  useEffect(()=>{
+    const fetchData = async () => {
+
+      console.log("SESSION HERE", session);
+      if (!session || !session.token || !session.userId) {
+        Alert.alert("Error", "Session is invalid. Please logout and log in again.");
+        return { status: 400 };
+      }
+
+      let response;
+      try {
+        response = await make_request({
+          relative_url: GET_ONE_USER+`/${session.userId}`,
+          HEADERS: {
+            "Authorization": `Bearer ${session.token}`
+          },
+          method: 'GET'
+        });
+        setUserDetails(response.data);
+        setSelectedImage(response.data.image);
+          } catch (err) {
+        console.log("Error fetching user data:", err);
+      }
+      console.log("response", response);
+    }
+
+    const result = fetchData();
+  },
+  []);
+
+  const updateData = async (payload) => {
+
+    console.log("SESSION HERE", session);
+    if (!session || !session.token || !session.userId) {
+      Alert.alert("Error", "Session is invalid. Please logout and log in again.");
+      return { status: 400 };
+    }
+
+    let response;
+    try {
+      response = await make_request({
+        relative_url: UPDATE_ONE_USER,
+        HEADERS: {
+          "Authorization": `Bearer ${session.token}`
+        },
+        body: {
+          field: payload.field,
+          value: payload.value,
+          _id: session.userId
+        },
+        method: 'PUT'
+      });
+      Alert.alert('Update Successful', JSON.stringify(response.data));
+      setModalVisible(false);
+    } catch (err) {
+      console.log("Error updating user data:", err);
+    }
+    console.log("response", response);
+
+    return response.data;
+  }
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      const { uri } = result.assets[0];
+      
+      // Convert to base64
+      const base64String = await FileSystem.readAsStringAsync(uri, { encoding: FileSystem.EncodingType.Base64 });
+      setSelectedImage(base64String);
+
+
+      const payload = {
+        field: "image",
+        value: base64String,
+      }
+
+      console.log(payload);
+
+      result = await updateData(payload)
+    }
+  };
     
   return (
     <View className="flex h-full w-full justify-center align-center bg-white px-8 pt-8">
@@ -116,7 +194,7 @@ export default function Profile() {
           {
             !selectedImage ? 
             <Image source={require("../../assets/images/mdi--user.png")} style={{flex:1, width: undefined, height: undefined, borderRadius: 100}}></Image>
-            : <Image source={{uri: selectedImage}} style={{flex:1, width: undefined, height: undefined, borderRadius: 100}}></Image>
+            : <Image source={{uri: `data:image/png;base64,${selectedImage}`}} style={{flex:1, width: undefined, height: undefined, borderRadius: 100}}></Image>
         }
           <TouchableOpacity className="border-2 border-[#D7DFC9] absolute -right-2 -bottom-2 rounded-full p-0.5 bg-white" onPress={pickImage}>
           <Iconify icon="entypo:pencil" size={24} color={"#000000"} />
@@ -183,6 +261,7 @@ export default function Profile() {
           onSave={handleSaveField}
           initialValue={userDetails[fieldToEdit]}
           fieldName={fieldToEdit}
+          session={session}
         /> 
       }
     </View>
