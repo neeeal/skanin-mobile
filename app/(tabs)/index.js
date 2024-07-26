@@ -93,12 +93,15 @@ export default function Index() {
                       </View>
                       <View className="border-t-2 max-w-[18%] border-green-600 p-1"></View>
                       <ScrollView horizontal={true} className="flex-row">
-                        {isLoading ? <ActivityIndicator size="large" color="#0000ff" /> :
-                        recentScans.map(scan => (
-                          <TouchableOpacity key={scan._id} onPress={() => router.push({pathname:`/dataDisplay`, params:scan})} className="pl-2">
-                            <Image className="rounded-xl ml-2" style={{ width: imageWidth, height: imageWidth }} source={{uri: `data:image/png;base64,${scan.rice_image}`}}></Image>
-                          </TouchableOpacity>
-                        ))}
+                        {
+                          isLoading ? (<ActivityIndicator size="large" color="#0000ff" />) :
+                          recentScans.length === 0 ?( <Text style={{fontFamily: 'Montserrat_400Regular'}} className="text-base">No history entries yet.</Text>) : 
+                          recentScans.map(scan => (
+                            <TouchableOpacity key={scan._id} onPress={() => router.push({pathname:`/dataDisplay`, params:scan})} className="pl-2">
+                              <Image className="rounded-xl ml-2" style={{ width: imageWidth, height: imageWidth }} source={{uri: `data:image/png;base64,${scan.rice_image}`}}></Image>
+                            </TouchableOpacity>
+                          ))
+                        }
                       </ScrollView>
                     </View>
                     <View className="p-4 pt-0">

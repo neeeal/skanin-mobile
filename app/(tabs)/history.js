@@ -101,9 +101,11 @@ export default function History() {
     const maxPage = getMaxPage(data);
     let displayedPages = [];
 
-    if (activePage <= 1) {
+    if (activePage <= 1 && maxPage === 0) {
+      displayedPages = [1]
+    } else if (activePage <= 1) {
       displayedPages = maxPage >= 3 ? [activePage, activePage + 1, activePage + 2] : [1, 2];
-    } else if (activePage >= maxPage) {
+    }else if (activePage >= maxPage) {
       displayedPages = maxPage >= 3 ? [maxPage - 2, maxPage - 1, maxPage] : [1, 2];
     } else {
       displayedPages = maxPage >= 3 ? [activePage - 1, activePage, activePage + 1] : [1, 2];
@@ -208,6 +210,7 @@ export default function History() {
     <View className="flex px-6 min-h-[66%] ">
               
       {isLoading ? <ActivityIndicator size="large" color="#0000ff" /> :
+      displayedData.length === 0 ?( <Text style={{fontFamily: 'Montserrat_400Regular'}} className="text-base">No history entries yet.</Text>) : 
         (displayedData.map((item, index)=>(
           <TouchableOpacity key={index} className=" min-h-[10%] mb-6 flex-row rounded-2xl bg-[#D7DFC9]" onPress={()=>setActiveData(item)}>
             <View style={{ width: imageWidth, height: imageWidth}} className="rounded-2xl">
@@ -260,11 +263,11 @@ export default function History() {
     ))}
     </View>
 
-    <TouchableOpacity onPress={nextPage} className={` rounded-xl bg-[#D9D9D9] ${ activePage===getMaxPage(data) ? "bg-[#B0B0B055]" : "bg-[#D9D9D9]"}`}>
+    <TouchableOpacity onPress={nextPage} className={` rounded-xl bg-[#D9D9D9] ${ activePage===getMaxPage(data) || getMaxPage(data)===0 ? "bg-[#B0B0B055]" : "bg-[#D9D9D9]"}`}>
         <Iconify
         icon="material-symbols-light:navigate-next"
         size={30}
-        color={ activePage===getMaxPage(data) ? "#ffffff" : "#000000"}
+        color={ activePage===getMaxPage(data) || getMaxPage(data)===0 ? "#ffffff" : "#000000"}
         />
     </TouchableOpacity >  
 
