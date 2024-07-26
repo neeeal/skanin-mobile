@@ -23,6 +23,7 @@ export default function Login() {
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
   const { fontsLoaded } = useFontContext();
+  const [secureText, setSecureText] = useState(true);
 
   const handleUserChange = (value) => {
     setUser(value);
@@ -80,6 +81,16 @@ export default function Login() {
     }
   }
 
+  const onPressToggle = () => {
+    if (secureText){
+      setSecureText(false);
+      // setIcon('mdi:eye-off-outline');
+    } else {
+      setSecureText(true);
+      // setIcon('mdi:eye-outline');
+    }
+  }
+
   if (!fontsLoaded) {
     return <AppLoading />;
   }
@@ -108,7 +119,25 @@ export default function Login() {
           </View>
           <View className="w-[80%] py-2 pl-3 flex-row bg-white rounded-md">
             <Lock width="32" height="32"/>
-            <TextInput  className="pl-2 flex flex-1 mr-2" placeholder='Password' placeholderTextColor={"#049B04"} secureTextEntry value={password} onChangeText={handlePasswordChange} />
+            <TextInput  className="pl-2 flex flex-1 mr-2" placeholder='Password' placeholderTextColor={"#049B04"} value={password} onChangeText={handlePasswordChange} secureTextEntry={secureText}/>
+            <TouchableOpacity onPress={onPressToggle} className='self-center pr-4'>
+              {
+                secureText ? (
+                  <Iconify
+                  icon='mdi:eye-off-outline' // Icons for visibility
+                  size={24}
+                  color={"#086608"} // Adjust color as needed
+                />
+                ) : 
+                (
+                  <Iconify
+                  icon='mdi:eye-outline' // Icons for visibility
+                  size={24}
+                  color={"#086608"} // Adjust color as needed
+                />
+                )
+              }
+            </TouchableOpacity>
           </View>
           <View className="mt-2">
             <TouchableOpacity 

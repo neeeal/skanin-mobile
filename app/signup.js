@@ -29,6 +29,7 @@ export default function Signup() {
   const [contact, setContact] = useState('');
   const [password, setPassword] = useState('');
   const { fontsLoaded } = useFontContext();
+  const [secureText, setSecureText] = useState(true);
 
   const handleFirstnameChange = (value) => {
     setFirstname(value);
@@ -108,6 +109,16 @@ export default function Signup() {
     else {
       Alert.alert('Error Encountered', err.message);
       throw new Error('Error Encountered');
+    }
+  }
+
+  const onPressToggle = () => {
+    if (secureText){
+      setSecureText(false);
+      // setIcon('mdi:eye-off-outline');
+    } else {
+      setSecureText(true);
+      // setIcon('mdi:eye-outline');
     }
   }
 
@@ -193,10 +204,27 @@ export default function Signup() {
                 className="pl-2 flex flex-1 mr-2" 
                 placeholder='Password' 
                 placeholderTextColor={"#049B04"} 
-                secureTextEntry 
                 value={password} 
                 onChangeText={handlePasswordChange}
               />
+            <TouchableOpacity onPress={onPressToggle} className='self-center pr-4'>
+              {
+                secureText ? (
+                  <Iconify
+                  icon='mdi:eye-off-outline' // Icons for visibility
+                  size={24}
+                  color={"#086608"} // Adjust color as needed
+                />
+                ) : 
+                (
+                  <Iconify
+                  icon='mdi:eye-outline' // Icons for visibility
+                  size={24}
+                  color={"#086608"} // Adjust color as needed
+                />
+                )
+              }
+            </TouchableOpacity>
             </View>
             <View className="mt-2">
               <TouchableOpacity 

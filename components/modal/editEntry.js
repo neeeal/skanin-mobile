@@ -10,9 +10,11 @@ import {
 } from 'react-native';
 import make_request from '../../helpers/url_server';
 import { UPDATE_ONE_USER } from '../../helpers/urls';
+import { Iconify } from 'react-native-iconify';
 
 const EditFieldModal = ({ isVisible, onClose, onSave, initialValue, fieldName, session }) => {
   const [text, setText] = useState(initialValue);
+  const [secureText, setSecureText] = useState(true);
   
   const updateData = async (payload) => {
 
@@ -62,6 +64,16 @@ const EditFieldModal = ({ isVisible, onClose, onSave, initialValue, fieldName, s
     onClose();
   };
 
+  const onPressToggle = () => {
+    if (secureText){
+      setSecureText(false);
+      // setIcon('mdi:eye-off-outline');
+    } else {
+      setSecureText(true);
+      // setIcon('mdi:eye-outline');
+    }
+  }
+
   return (
     <Modal
       transparent={true}
@@ -71,22 +83,49 @@ const EditFieldModal = ({ isVisible, onClose, onSave, initialValue, fieldName, s
       <View style={styles.modalOverlay}>
         <View style={styles.modalContainer}>
           <Text style={styles.modalTitle}>Edit {fieldName}</Text>
+          <View className="flex-row mx-[10%] min-w-full border-b border-black mb-2">
           {
             fieldName === "password"  ? 
-              (<TextInput
-                style={styles.textInput}
-                value={text}
-                onChangeText={setText}
-                secureTextEntry={true}
-                placeholder="Enter your new password"
-              />) :
-              (<TextInput
-                style={styles.textInput}
+              (
+                <View className="flex-row justify-between min-w-full">
+                  <TextInput
+                    className=" border border-black overflow-hidden"
+                    value={text}
+                    onChangeText={setText}
+                    secureTextEntry={secureText}
+                    placeholder="Enter your new password"
+                    trailing
+                  />
+                  <TouchableOpacity onPress={onPressToggle} className='self-center'>
+                  {
+                    secureText ? (
+                      <Iconify
+                      icon='mdi:eye-off-outline' // Icons for visibility
+                      size={24}
+                      color={"#086608"} // Adjust color as needed
+                    />
+                    ) : 
+                    (
+                      <Iconify
+                      icon='mdi:eye-outline' // Icons for visibility
+                      size={24}
+                      color={"#086608"} // Adjust color as needed
+                    />
+                    )
+                  }
+                </TouchableOpacity>
+                </View>
+            ) :
+              (
+              <TextInput
+                className="w-full"
                 value={text}
                 onChangeText={setText}
                 placeholder={`Enter your ${fieldName}`}
-              />)
+              />
+            )
           }
+          </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.button} onPress={onClose}>
               <Text style={styles.buttonText}>Cancel</Text>
@@ -122,8 +161,8 @@ const styles = StyleSheet.create({
   },
   textInput: {
     width: '100%',
-    borderBottomWidth: 1,
-    marginBottom: 20,
+    // borderBottomWidth: 1,
+    // marginBottom: 20,
   },
   buttonContainer: {
     flexDirection: 'row',
