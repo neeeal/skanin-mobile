@@ -88,6 +88,11 @@ export default function App() {
       });
       console.log('Scan successful:', response);
     } catch (err) {
+      if (err.includes("Session expired")){
+        console.error("Session Expired");
+        Alert.alert("Session Expired", "Please Login again.");
+        return { status: 401 };
+      }
       console.error("Error during scanning:", err);
       Alert.alert("Error", "Scanning and getting recommendation failed.");
       return { status: 400 };

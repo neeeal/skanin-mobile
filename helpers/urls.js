@@ -1,7 +1,8 @@
 // apiConstants.js
 
 // export const BASE_URL = "http://192.168.254.102:5000/api/";
-export const BASE_URL = 'https://grubworm-full-dory.ngrok-free.app/api/'
+// export const BASE_URL = 'https://grubworm-full-dory.ngrok-free.app/api/'
+export const BASE_URL = 'https://softies-backend-production.up.railway.app/api/';
 
 // History
 export const GET_HISTORY = `${BASE_URL}history/get_history_with_images`;
