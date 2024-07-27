@@ -219,8 +219,8 @@ export default function History() {
                 className=" rounded-l-2xl"
               />
             </View>
-            <View className="flex-col pl-8 justify-center min-w-[75%]">
-              <Text className="text-[#049B04] text-2xl" style={{fontFamily: 'Montserrat_600SemiBold'}}>{item.stress_name}</Text>
+            <View className="flex-col pl-4 justify-center min-w-[75%]">
+              <Text className="text-[#049B04] text-xl" style={{fontFamily: 'Montserrat_600SemiBold'}}>{item.stress_name}</Text>
               <View className="flex-row justify-between pr-2">
                 <Text className="text-xs" style={{fontFamily: 'Montserrat_400Regular'}}>{item.stress_type}</Text>
                 <Text className="text-xs" style={{fontFamily: 'Montserrat_400Regular'}}>{item.date_transaction}</Text>

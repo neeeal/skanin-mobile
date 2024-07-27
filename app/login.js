@@ -72,7 +72,7 @@ export default function Login() {
       Alert.alert('Logging in', JSON.stringify(session));
       signIn(result.data.token, result.data._id);
       console.log("THIS IS SAVED", session)
-      router.replace('/');
+      router.push('/home');
     }
     else if (result.status === 401) {
       signOut();

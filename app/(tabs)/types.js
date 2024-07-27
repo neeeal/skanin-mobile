@@ -190,9 +190,9 @@ export default function Types() {
                       className=" rounded-l-2xl"
                       />
                   </View>
-                  <View className="flex-col pl-8 justify-center">
+                  <View className="flex-col pl-4 justify-center">
                     <Text className="text-[#049B04] text-xl" style={{ fontFamily: 'Montserrat_600SemiBold' }}>{item.stress_name}</Text>
-                    <Text className="text-base" style={{ fontFamily: 'Montserrat_400Regular' }}>{item.stress_type}</Text>
+                    <Text className="text-xs" style={{ fontFamily: 'Montserrat_400Regular' }}>{item.stress_type}</Text>
                   </View>
                 </TouchableOpacity>
               ))}

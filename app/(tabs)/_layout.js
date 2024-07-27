@@ -17,7 +17,7 @@ export default function AppLayout() {
   if (!session) {
     // On web, static rendering will stop here as the user is not authenticated
     // in the headless Node process that the pages are rendered in.
-    return <Redirect href="/landing" />;
+    return <Redirect href="/" />;
   }
 
 
@@ -38,7 +38,7 @@ export default function AppLayout() {
       tabBarShowLabel: false,
     }}>
       <Tabs.Screen
-        name="index"
+        name="home"
         options={{
           title: 'Home',
           headerShown: false,
@@ -86,6 +86,16 @@ export default function AppLayout() {
         name="dataDisplay"
         options={{
           title: 'DataDisplay',
+          headerShown: false,
+          tabBarStyle: {display:"none"},
+          href: null,
+          tabBarIcon: ({ color }) => <Iconify icon="mdi:heart" size={24} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: 'index',
           headerShown: false,
           tabBarStyle: {display:"none"},
           href: null,
