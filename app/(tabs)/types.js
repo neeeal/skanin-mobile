@@ -35,7 +35,6 @@ export default function Types() {
   const [pages, setPages] = useState(getPages(data));
 
   const imageWidth = parseInt(Dimensions.get('window').width / 5);
-  const imageWidthBig = parseInt(Dimensions.get('window').width / 2);
 
   const nextPage = () => {
     setActivePage((currentPage) => currentPage >= getMaxPage(data) ? currentPage : currentPage + 1);

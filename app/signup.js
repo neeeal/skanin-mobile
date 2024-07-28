@@ -9,7 +9,6 @@ import {
     TextInput, 
     KeyboardAvoidingView, 
     Platform,
-    Image,
     Alert
 } from 'react-native';
 import { useFontContext } from '../ftx';
@@ -107,7 +106,7 @@ export default function Signup() {
       router.push("/login");
     }
     else {
-      Alert.alert('Error Encountered', err.message);
+      Alert.alert('Error Encountered',);
       throw new Error('Error Encountered');
     }
   }
@@ -206,6 +205,7 @@ export default function Signup() {
                 placeholderTextColor={"#049B04"} 
                 value={password} 
                 onChangeText={handlePasswordChange}
+                secureTextEntry={secureText}
               />
             <TouchableOpacity onPress={onPressToggle} className='self-center pr-4'>
               {
