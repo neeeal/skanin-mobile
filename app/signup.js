@@ -102,7 +102,7 @@ export default function Signup() {
   const onPressRegister = async() => {
     const result = await registerLogic();
     if (result.status === 200) {
-      Alert.alert('Signup Success');
+      Alert.alert("Development indicator", "Success signup"); // TODO: Remove
       router.push("/login");
     }
     else {

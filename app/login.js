@@ -70,6 +70,7 @@ export default function Login() {
       // saveResponseBody(result.data)
     console.log("before", session);
       // Alert.alert('Logging in', JSON.stringify(session));
+      Alert.alert("Development indicator", "Success login"); // TODO: Remove
       signIn(result.data.token, result.data._id);
       console.log("THIS IS SAVED", session)
       router.push('/home');

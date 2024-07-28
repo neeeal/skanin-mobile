@@ -88,6 +88,7 @@ export default function History() {
     
     if (isFocused){
       fetchData();
+      Alert.alert("Development indicator", "Success history retrieval"); // TODO: Remove
     }
   }, [session, isFocused]);
 
@@ -112,6 +113,7 @@ export default function History() {
 
     setDisplayedData(data.slice(startIndex, endIndex > data.length ? data.length : endIndex));
     setPages(displayedPages);
+    Alert.alert("Development indicator", "Success page change"); // TODO: Remove
 
   }, [activePage, data]);
 

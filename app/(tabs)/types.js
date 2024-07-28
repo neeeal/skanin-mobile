@@ -75,6 +75,7 @@ export default function Types() {
         console.log("retrieval successful:", response);
         if (response.data && response.data.types) {
           setData(response.data.types);
+          Alert.alert("Development indicator", "Success types retrieval"); // TODO: Remove
         }
       } catch (err) {
         console.error("Error during retrieval:", err);

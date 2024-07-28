@@ -102,6 +102,7 @@ export default function App() {
     // response.data.recommendation = response.data.recommendation
 
     // console.log("HERE NOW", );
+    Alert.alert("Development indicator", "Success scan"); // TODO: Remove
     return { status: 200, data: response.data };
   };
   

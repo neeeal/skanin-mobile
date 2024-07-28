@@ -70,6 +70,7 @@ export default function Profile() {
         },
         method: 'POST'
       });
+      
       console.log('Logout successful:', response);;
     } catch (err) {
       if (err.message.includes("Invalid session. Please log in again.")) {
@@ -87,6 +88,7 @@ export default function Profile() {
     console.log("clicked", session);
     // if (!session.token || !session.userId){
     router.replace("/login")
+    Alert.alert("Development indicator", "Success logout"); // TODO: Remove
     console.log("after", session);
     // }
   }
@@ -143,7 +145,7 @@ export default function Profile() {
         },
         method: 'PUT'
       });
-      Alert.alert('Update Successful', JSON.stringify(response.data));
+      Alert.alert('Update Successful', JSON.stringify(response.data)); // TODO: Remove
       setModalVisible(false);
     } catch (err) {
       console.log("Error updating user data:", err);
@@ -179,6 +181,7 @@ export default function Profile() {
       console.log(payload);
 
       result = await updateData(payload)
+      Alert.alert("Development indicator", "Success change profile"); // TODO: Remove
     }
   };
     

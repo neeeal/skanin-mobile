@@ -4,7 +4,7 @@ import {
   View, 
   ImageBackground, 
   ActivityIndicator,
-  TouchableOpacity, 
+  Alert,
   StyleSheet 
 } from 'react-native';
 import { useSession } from '../../ctx';
@@ -30,7 +30,6 @@ export default function Landing() {
 
       console.log("SESSION HERE", session);
       if (!session || !session.token || !session.userId) {
-        // Alert.alert("Error", "Session is invalid. Please logout and log in again.");
           setIsLoading(false);
           return;
       }
@@ -50,7 +49,9 @@ export default function Landing() {
         if (response.status && response.status == 200) {
           router.push("/home")
           console.log("worked")
-        }else{
+          Alert.alert("Development indicator", "Success already logged in"); // TODO: Remove
+      }else{
+          Alert.alert("Development indicator", "Success not logged in"); // TODO: Remove
           setIsLoading(false);
         }
       }
