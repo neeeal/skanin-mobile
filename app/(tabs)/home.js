@@ -12,7 +12,6 @@ import {
   Alert
 } from 'react-native';
 import { router } from 'expo-router';
-import { Iconify } from "react-native-iconify";
 import make_request from '../../helpers/url_server';
 import { GET_HOME_DATA } from '../../helpers/urls';
 import { useSession } from '../../ctx';

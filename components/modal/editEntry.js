@@ -89,7 +89,7 @@ const EditFieldModal = ({ isVisible, onClose, onSave, initialValue, fieldName, s
               (
                 <View className="flex-row justify-between min-w-full">
                   <TextInput
-                    className=" border border-black overflow-hidden"
+                    className="overflow-hidden"
                     value={text}
                     onChangeText={setText}
                     secureTextEntry={secureText}

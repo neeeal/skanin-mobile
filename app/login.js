@@ -69,7 +69,7 @@ export default function Login() {
       // console.log("Succesfully logged in. Now here part 2.",result.data)
       // saveResponseBody(result.data)
     console.log("before", session);
-      Alert.alert('Logging in', JSON.stringify(session));
+      // Alert.alert('Logging in', JSON.stringify(session));
       signIn(result.data.token, result.data._id);
       console.log("THIS IS SAVED", session)
       router.push('/home');

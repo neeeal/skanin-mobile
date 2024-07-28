@@ -82,7 +82,7 @@ export default function Profile() {
 
   const onPressLogout = async () => {
     result = await logoutLogic()
-    Alert.alert('Logout', JSON.stringify(session));
+    // Alert.alert('Logout', JSON.stringify(session));
     signOut();
     console.log("clicked", session);
     // if (!session.token || !session.userId){
