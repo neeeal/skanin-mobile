@@ -139,8 +139,8 @@ export default function Profile() {
           "Authorization": `Bearer ${session.token}`
         },
         body: {
-          field: payload.field,
-          value: payload.value,
+          field: [payload.field],
+          value: [payload.value],
           _id: session.userId
         },
         method: 'PUT'

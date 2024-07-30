@@ -13,65 +13,73 @@ import { UPDATE_ONE_USER } from '../../helpers/urls';
 import { Iconify } from 'react-native-iconify';
 
 const EditFieldModal = ({ isVisible, onClose, onSave, initialValue, fieldName, session }) => {
-  const [text, setText] = useState(initialValue);
+  const [value, setValue] = useState('');
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPasswordConfirmation, setNewPasswordConfirmation] = useState('');
   const [secureText, setSecureText] = useState(true);
-  
-  const updateData = async (payload) => {
+  const [secureTextNew, setSecureTextNew] = useState(true);
+  const [secureTextConfirmation, setSecureTextConfirmation] = useState(true);
 
-    console.log("SESSION HERE", session);
+  const updateData = async (payload) => {
     if (!session || !session.token || !session.userId) {
       Alert.alert("Error", "Session is invalid. Please logout and log in again.");
       return { status: 400 };
     }
 
-    let response;
     try {
-      response = await make_request({
+      const response = await make_request({
         relative_url: UPDATE_ONE_USER,
         HEADERS: {
           "Authorization": `Bearer ${session.token}`
         },
-        body: {
-          field: payload.field,
-          value: payload.value,
-          _id: session.userId
-        },
+        body: payload,
         method: 'PUT'
       });
-      Alert.alert('Update Successful', JSON.stringify(response.data));
-      isVisible = false;
+      Alert.alert('Update Successful', 'Your information has been updated.');
+      onClose();
     } catch (err) {
       console.log("Error updating user data:", err);
-      Alert.alert("Error updating user data:", err);
+      Alert.alert("Error updating user data:", err.message || "Something went wrong.");
     }
-    console.log("response", response);
-
-    return response.data;
   }
 
   const handleSave = () => {
-    onSave(text, fieldName);
-    
-    const payload = {
-      field: fieldName,
-      value: text
+    onSave(String(value).toLowerCase(), fieldName);
+    let payload = {};
+    if (fieldName === "password") {
+      if (value !== newPasswordConfirmation) {
+        Alert.alert("Error", "New password and confirmation do not match.");
+        return;
+      }
+        payload = {
+        field: ["password"],
+        value: [value],
+        old_password: oldPassword,
+        new_password_confirmation: newPasswordConfirmation,
+        _id: session.userId
+      };
+    } else {
+      payload = {
+        field: [fieldName],
+        value: [value],
+        _id: session.userId
+      };
     }
-
-    const result = updateData(payload);
-
-    console.log(result);
-
+    console.log(payload)
+    updateData(payload);
     onClose();
   };
 
-  const onPressToggle = () => {
-    if (secureText){
-      setSecureText(false);
-      // setIcon('mdi:eye-off-outline');
-    } else {
-      setSecureText(true);
-      // setIcon('mdi:eye-outline');
-    }
+  const onPressToggleOld = () => {
+    setSecureText(!secureText);
+  }
+
+  const onPressToggleNew = () => {
+    setSecureTextNew(!secureTextNew);
+  }
+
+  const onPressToggleConfirmation = () => {
+    setSecureTextConfirmation(!secureTextConfirmation);
   }
 
   return (
@@ -83,21 +91,21 @@ const EditFieldModal = ({ isVisible, onClose, onSave, initialValue, fieldName, s
       <View style={styles.modalOverlay}>
         <View style={styles.modalContainer}>
           <Text style={styles.modalTitle}>Edit {fieldName}</Text>
-          <View className="flex-row mx-[10%] min-w-full border-b border-black mb-2">
-          {
-            fieldName === "password"  ? 
-              (
-                <View className="flex-row justify-between min-w-full">
-                  <TextInput
-                    className="overflow-hidden"
-                    value={text}
-                    onChangeText={setText}
-                    secureTextEntry={secureText}
-                    placeholder="Enter your new password"
-                    trailing
-                  />
-                  <TouchableOpacity onPress={onPressToggle} className='self-center'>
-                  {
+          <View style={styles.inputContainer}>
+            {fieldName === "password" ? (
+              <>
+                <View className="flex-row justify-between min-w-full items-center pb-2">
+                <Text style={styles.label}>Old:</Text>
+                <View className="flex-row flex-1 justify-between">
+                <TextInput
+                  style={styles.textInput}
+                  value={oldPassword}
+                  onChangeText={setOldPassword}
+                  secureTextEntry={secureText}
+                  placeholder="Enter your old password"
+                />
+                <TouchableOpacity onPress={onPressToggleOld} className="self-center">
+                {
                     secureText ? (
                       <Iconify
                       icon='mdi:eye-off-outline' // Icons for visibility
@@ -114,17 +122,76 @@ const EditFieldModal = ({ isVisible, onClose, onSave, initialValue, fieldName, s
                     )
                   }
                 </TouchableOpacity>
+                </View></View>
+                <View className="flex-row justify-between min-w-full items-center pb-2">
+                <Text style={styles.label}>New:</Text>
+                <View className="flex-row flex-1 justify-between">
+                <TextInput
+                  style={styles.textInput}
+                  value={value}
+                  onChangeText={setValue}
+                  secureTextEntry={secureTextNew}
+                  placeholder="Enter your new password"
+                />
+                <TouchableOpacity onPress={onPressToggleNew} className="self-center">
+                {
+                    secureTextNew ? (
+                      <Iconify
+                      icon='mdi:eye-off-outline' // Icons for visibility
+                      size={24}
+                      color={"#086608"} // Adjust color as needed
+                    />
+                    ) : 
+                    (
+                      <Iconify
+                      icon='mdi:eye-outline' // Icons for visibility
+                      size={24}
+                      color={"#086608"} // Adjust color as needed
+                    />
+                    )
+                  }
+                </TouchableOpacity>
                 </View>
-            ) :
-              (
+                </View>
+                <View className="flex-row justify-between min-w-full items-center pb-2">
+                <Text style={styles.label}>Confirm:</Text>
+                <View className="flex-row flex-1 justify-between">
+                <TextInput
+                  style={styles.textInput}
+                  value={newPasswordConfirmation}
+                  onChangeText={setNewPasswordConfirmation}
+                  secureTextEntry={secureTextConfirmation}
+                  placeholder="Confirm your new password"
+                />
+                <TouchableOpacity onPress={onPressToggleConfirmation} className="self-center">
+                {
+                    secureTextConfirmation ? (
+                      <Iconify
+                      icon='mdi:eye-off-outline' // Icons for visibility
+                      size={24}
+                      color={"#086608"} // Adjust color as needed
+                    />
+                    ) : 
+                    (
+                      <Iconify
+                      icon='mdi:eye-outline' // Icons for visibility
+                      size={24}
+                      color={"#086608"} // Adjust color as needed
+                    />
+                    )
+                  }
+                </TouchableOpacity>
+                </View>
+                </View>
+              </>
+            ) : (
               <TextInput
-                className="w-full"
-                value={text}
-                onChangeText={setText}
+                style={styles.textInput}
+                value={value}
+                onChangeText={setValue}
                 placeholder={`Enter your ${fieldName}`}
               />
-            )
-          }
+            )}
           </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.button} onPress={onClose}>
@@ -141,6 +208,12 @@ const EditFieldModal = ({ isVisible, onClose, onSave, initialValue, fieldName, s
 };
 
 const styles = StyleSheet.create({
+  label:{
+    fontSize: 14,
+    textAlign: "right",
+    minWidth: "20%",
+    paddingRight: "1%"
+  },
   modalOverlay: {
     flex: 1,
     justifyContent: 'center',
@@ -159,10 +232,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
   },
-  textInput: {
+  inputContainer: {
     width: '100%',
-    // borderBottomWidth: 1,
-    // marginBottom: 20,
+    marginBottom: 20,
+  },
+  textInput: {
+    width: '90%',
+    padding: 5,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 4,
+    // marginBottom: 10,
   },
   buttonContainer: {
     flexDirection: 'row',
