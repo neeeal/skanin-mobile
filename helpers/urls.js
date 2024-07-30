@@ -18,3 +18,7 @@ export const LOGIN = `${BASE_URL}users/login`;
 export const LOGOUT = `${BASE_URL}users/logout`;
 export const GET_ONE_USER = `${BASE_URL}users/get_user`;
 export const UPDATE_ONE_USER = `${BASE_URL}users/update_user`;
+
+// Email
+export const FORGOT_PASSWORD = `${BASE_URL}email/forgot_password`;
+// export const RESET_PASSWORD = `${BASE_URL}email/reset_password`;

@@ -46,13 +46,13 @@ export default function Landing() {
           } catch (err) {
         console.log("Error fetching user data:", err);
       } finally{
-        if (response.status && response.status == 200) {
+        if (response && response.status && response.status == 200) {
           router.push("/home")
           console.log("worked")
           Alert.alert("Development indicator", "Success already logged in"); // TODO: Remove
       }else{
-          Alert.alert("Development indicator", "Success not logged in"); // TODO: Remove
           setIsLoading(false);
+          Alert.alert("Development indicator", "Success not logged in"); // TODO: Remove
         }
       }
     }
