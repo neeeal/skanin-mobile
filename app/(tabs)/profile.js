@@ -204,8 +204,8 @@ export default function Profile() {
           </TouchableOpacity>
         </View>
         <View className="  flex pt-4 items-center">
-          <Text style={{fontFamily: 'Montserrat_500Medium'}} className="text-black text-3xl">{userDetails.name}</Text>
-          <Text style={{fontFamily: 'Montserrat_300Light'}} className="text-black text-base">{userDetails.position}</Text>
+          <Text style={{fontFamily: 'Montserrat_500Medium'}} className="text-black text-3xl">{userDetails.username}</Text>
+          {/* <Text style={{fontFamily: 'Montserrat_300Light'}} className="text-black text-base">{userDetails.position}</Text> */}
         </View>
       </View>
 
