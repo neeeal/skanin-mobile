@@ -8,7 +8,6 @@ import {
     TextInput, 
     KeyboardAvoidingView, 
     Platform,
-    Image,
     Alert
 } from 'react-native';
 import { useFontContext } from '../ftx';
@@ -31,6 +30,7 @@ export default function ForgotPassword() {
   }
 
   const forgotPasswordLogic = async () => {
+    let response;
     try {
       response = await make_request({
         relative_url: FORGOT_PASSWORD,
